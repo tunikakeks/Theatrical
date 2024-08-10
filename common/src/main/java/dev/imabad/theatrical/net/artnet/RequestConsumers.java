@@ -48,23 +48,21 @@ public class RequestConsumers extends BaseC2SMessage {
     public void handle(NetworkManager.PacketContext context) {
         Level level = context.getPlayer().level();
         if(level.getServer() != null ) {
-            if (context.getPlayer().hasPermissions(level.getServer().getOperatorUserPermissionLevel())) {
-                DMXNetwork network = DMXNetworkData.getInstance(level.getServer().overworld()).getNetwork(networkId);
-                if(network != null && network.isMember(context.getPlayer().getUUID())){
-                    List<DMXDevice> devices = new ArrayList<>();
-                    Collection<DMXConsumer> consumers = network.getConsumers(universe);
-                    if(consumers == null){
-                        return;
-                    }
-                    consumers.forEach(consumer -> {
-                        devices.add(new DMXDevice(consumer.getDeviceId(), consumer.getChannelStart(),
-                                consumer.getChannelCount(), consumer.getDeviceTypeId(), consumer.getActivePersonality(), consumer.getModelName(),
-                                consumer.getFixtureId()));
-                    });
-                    new ListConsumers(universe, devices).sendTo((ServerPlayer)context.getPlayer());
+            DMXNetwork network = DMXNetworkData.getInstance(level.getServer().overworld()).getNetwork(networkId);
+            if(network != null && network.isMember(context.getPlayer().getUUID())){
+                List<DMXDevice> devices = new ArrayList<>();
+                Collection<DMXConsumer> consumers = network.getConsumers(universe);
+                if(consumers == null){
+                    return;
                 }
-            } else {
-                Theatrical.LOGGER.info("{} tried to send ArtNet data but is not authorized!", context.getPlayer().getName());
+                consumers.forEach(consumer -> {
+                    devices.add(new DMXDevice(consumer.getDeviceId(), consumer.getChannelStart(),
+                            consumer.getChannelCount(), consumer.getDeviceTypeId(), consumer.getActivePersonality(), consumer.getModelName(),
+                            consumer.getFixtureId()));
+                });
+                new ListConsumers(universe, devices).sendTo((ServerPlayer)context.getPlayer());
+            }else {
+                Theatrical.LOGGER.info("{} tried to request data about a network that does not exist", context.getPlayer().getName().getString());
             }
         }
     }
