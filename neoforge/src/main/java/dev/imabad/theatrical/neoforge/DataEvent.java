@@ -129,7 +129,7 @@ public class DataEvent {
             add("screen.artnetconfig.network", "Network");
             add("screen.artnetconfig.entry", "Subnet: %s Universe: %s");
             add("item.configurationcard.success", "Configured device to %s network, universe %s and address %s - next address is %s.");
-            add("screen.artnetconfig.entry.subnet": "Subnet: %s");
+            add("screen.artnetconfig.entry.subnet", "Subnet: %s");
             add("screen.artnetconfig.entry.universe", "Universe: %s");
             add("screen.artnetconfig.subnet", "DMX Subnet");
             add("screen.artnetconfig.networkUniverse", "Network Universe");
