@@ -50,8 +50,31 @@ public class LEDPanelRenderer extends FixtureRenderer<LEDPanelBlockEntity> {
                 }
             } else {
                 if(hangDirection == Direction.UP){
-                    poseStack.mulPose(Axis.ZN.rotationDegrees(90));
-                    poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                    switch (facing){
+                        case NORTH -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                        case SOUTH -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
+                        case WEST -> {
+                            poseStack.mulPose(Axis.ZP.rotationDegrees(90));
+                            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                        }
+                        case EAST -> {
+                            poseStack.mulPose(Axis.ZN.rotationDegrees(90));
+                            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                        }
+                    }
+                } else if(hangDirection == Direction.DOWN){
+                    switch (facing){
+                        case NORTH -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
+                        case SOUTH -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                        case WEST -> {
+                            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                            poseStack.mulPose(Axis.YN.rotationDegrees(90));
+                        }
+                        case EAST -> {
+                            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                            poseStack.mulPose(Axis.YP.rotationDegrees(90));
+                        }
+                    }
                 }
             }
             poseStack.translate(0, -0.5, 0F);
@@ -126,8 +149,31 @@ public class LEDPanelRenderer extends FixtureRenderer<LEDPanelBlockEntity> {
                 }
             } else {
                 if(hangDirection == Direction.UP){
-                    poseStack.mulPose(Axis.ZN.rotationDegrees(90));
-                    poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                    switch (facing){
+                        case NORTH -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                        case SOUTH -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
+                        case WEST -> {
+                            poseStack.mulPose(Axis.ZP.rotationDegrees(90));
+                            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                        }
+                        case EAST -> {
+                            poseStack.mulPose(Axis.ZN.rotationDegrees(90));
+                            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                        }
+                    }
+                } else if(hangDirection == Direction.DOWN){
+                    switch (facing){
+                        case NORTH -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
+                        case SOUTH -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                        case WEST -> {
+                            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                            poseStack.mulPose(Axis.YN.rotationDegrees(90));
+                        }
+                        case EAST -> {
+                            poseStack.mulPose(Axis.XP.rotationDegrees(90));
+                            poseStack.mulPose(Axis.YP.rotationDegrees(90));
+                        }
+                    }
                 }
             }
             poseStack.translate(0, -0.5, 0F);
