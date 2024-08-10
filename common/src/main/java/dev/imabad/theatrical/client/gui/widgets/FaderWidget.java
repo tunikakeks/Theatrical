@@ -2,10 +2,8 @@ package dev.imabad.theatrical.client.gui.widgets;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.imabad.theatrical.Theatrical;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.ImageWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

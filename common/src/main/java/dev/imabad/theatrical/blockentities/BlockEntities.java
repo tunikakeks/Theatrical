@@ -2,7 +2,6 @@ package dev.imabad.theatrical.blockentities;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import dev.imabad.theatrical.TheatricalExpectPlatform;
 import dev.imabad.theatrical.TheatricalRegistry;
 import dev.imabad.theatrical.blockentities.control.BasicLightingDeskBlockEntity;
 import dev.imabad.theatrical.blockentities.interfaces.ArtNetInterfaceBlockEntity;
@@ -11,8 +10,6 @@ import dev.imabad.theatrical.blockentities.light.FresnelBlockEntity;
 import dev.imabad.theatrical.blockentities.light.LEDPanelBlockEntity;
 import dev.imabad.theatrical.blockentities.light.MovingLightBlockEntity;
 import dev.imabad.theatrical.blocks.Blocks;
-import dev.imabad.theatrical.blocks.control.BasicLightingDeskBlock;
-import dev.imabad.theatrical.blocks.light.LEDPanelBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
