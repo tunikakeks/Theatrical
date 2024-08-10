@@ -110,7 +110,7 @@ public class FresnelBlock extends BaseLightBlock{
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if(super.use(state, level, pos, player, hand, hit) == InteractionResult.PASS) {
-            if (level.isClientSide) {
+            if (!level.isClientSide) {
                 if (player.isCrouching()) {
                     if (TheatricalClient.DEBUG_BLOCKS.contains(pos)) {
                         TheatricalClient.DEBUG_BLOCKS.remove(pos);
