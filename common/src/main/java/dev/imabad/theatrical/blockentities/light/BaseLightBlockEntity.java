@@ -301,6 +301,13 @@ public abstract class BaseLightBlockEntity extends ClientSyncBlockEntity impleme
             if (be.isUpsideDown() || be instanceof FresnelBlockEntity) {
                 tilt = -tilt;
             }
+            if(be instanceof LEDPanelBlockEntity){
+                if(blockState.getValue(BaseLightBlock.HANG_DIRECTION) == Direction.DOWN){
+                    tilt = -90;
+                } else if (blockState.getValue(BaseLightBlock.HANG_DIRECTION) == Direction.UP){
+                    tilt = 90;
+                }
+            }
             float pan = (direction.toYRot() - be.getPan());
             if(direction.getAxis() == Direction.WEST.getAxis()){
                 pan -= 180;

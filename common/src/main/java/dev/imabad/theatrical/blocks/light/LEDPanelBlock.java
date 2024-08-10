@@ -63,7 +63,7 @@ public class LEDPanelBlock extends BaseLightBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
         return super.getStateForPlacement(blockPlaceContext).setValue(HANGING,
-                blockPlaceContext.getClickedFace() == Direction.DOWN ||
+                blockPlaceContext.getClickedFace().getAxis() == Direction.Axis.Y ||
                         isHanging(blockPlaceContext.getLevel(), blockPlaceContext.getClickedPos()));
     }
 
@@ -77,6 +77,9 @@ public class LEDPanelBlock extends BaseLightBlock {
 
     @Override
     public Direction getLightFacing(Direction hangDirection, Player placingPlayer) {
+        if(hangDirection.getAxis() == Direction.Axis.Y){
+            return placingPlayer.getDirection();
+        }
         return placingPlayer.getDirection().getOpposite();
     }
 

@@ -131,7 +131,9 @@ public class PipeBlock extends DirectionalBlock implements Support {
                     BlockPos offset;
                     if(state.getValue(FACING).getAxis() == Direction.Axis.Y){
                         offset = pos.relative(player.getDirection().getOpposite());
-                    } else {
+                    } else if(hit.getDirection() == Direction.UP){
+                        offset = pos.relative(Direction.UP);
+                    }else {
                         offset = pos.relative(Direction.DOWN);
                     }
                     if(!level.getBlockState(offset).isAir()){
@@ -140,6 +142,8 @@ public class PipeBlock extends DirectionalBlock implements Support {
                     Direction hangDirection = Direction.UP;
                     if(state.getValue(FACING).getAxis() == Direction.Axis.Y){
                         hangDirection = player.getDirection();
+                    } else if(hit.getDirection() == Direction.UP){
+                        hangDirection = Direction.DOWN;
                     }
                     Direction facingDirection = hangableBlock.getLightFacing(hangDirection, player);
                     level.setBlock(offset, hangableBlock.defaultBlockState()
