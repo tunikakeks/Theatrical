@@ -43,6 +43,7 @@ public class FresnelScreen extends GenericDMXConfigurationScreen<FresnelBlockEnt
 
     @Override
     protected void update() {
+        super.update();
         new UpdateFixturePosition(be.getBlockPos(), be.getTilt(), be.getPan()).sendToServer();
     }
 

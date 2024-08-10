@@ -70,7 +70,7 @@ public class ArtNetConfigurationScreen extends Screen {
         yCenter = (this.height / 2);
         this.ipAddressBox = new LabeledEditBox(this.font, xCenter, yCenter, 100, 20, Component.translatable("artneti.ipAddress")).color(0xffffff).shadow(true);
         this.ipAddressBox.setValue(ipAddress);
-        layout.addChild(this.ipAddressBox, 1, 1, 1, 4);
+        layout.addChild(this.ipAddressBox, 1, 1, 1, 2);
         configList = new ArtNetUniverseConfigurationList(Minecraft.getInstance(), this, 150, 200, Component.literal("test"));
         layout.addChild(configList, 2, 1, 2, 1, LayoutSettings.defaults().alignHorizontallyCenter().paddingBottom(0));
         configList.setEntries(universeConfigs);
@@ -307,18 +307,20 @@ public class ArtNetConfigurationScreen extends Screen {
 //        if(!this.be.isOwnedByCurrentClient()){
 //            renderLabel(guiGraphics, "artneti.notAuthorized", 5,75);
 //        } else {
-//            if(this.be.hasReceivedPacket()){
-//                long inSeconds = Math.round((float) (System.currentTimeMillis() - this.be.getLastReceivedPacket()) / 1000);
-//                renderLabel(guiGraphics, "artneti.lastReceived", 5,75, inSeconds);
-//            } else {
-//                renderLabel(guiGraphics, "artneti.notConnected", 5,75);
-//            }
+        if(TheatricalConfig.INSTANCE.CLIENT.artnetEnabled) {
+            if (TheatricalClient.getArtNetManager().getClient().hasReceivedPacket()) {
+                long inSeconds = Math.round((float) (System.currentTimeMillis() - TheatricalClient.getArtNetManager().getClient().getLastPacketMS()) / 1000);
+                renderLabel(guiGraphics, "artneti.lastReceived", 5, ipAddressBox.getY() + 5, inSeconds);
+            } else {
+                renderLabel(guiGraphics, "artneti.notConnected", 5, ipAddressBox.getY() + 5);
+            }
+        }
 //        }
     }
 
     private void renderLabel(GuiGraphics guiGraphics, String translationKey, int offSetX, int offSetY, Object... replacements){
         MutableComponent translatable = Component.translatable(translationKey, replacements);
-        guiGraphics.drawString(font, translatable, xCenter + (this.font.width(translatable.getString()) / 2), yCenter + offSetY, 0xffffff, false);
+        guiGraphics.drawString(font, translatable, xCenter + (this.font.width(translatable.getString()) / 2), offSetY, 0xffffff, false);
     }
 
     @Override
