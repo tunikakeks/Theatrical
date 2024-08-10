@@ -1,15 +1,18 @@
 package dev.imabad.theatrical.blocks.light;
 
 import dev.imabad.theatrical.TheatricalClient;
+import dev.imabad.theatrical.TheatricalScreen;
 import dev.imabad.theatrical.blockentities.BlockEntities;
 import dev.imabad.theatrical.blockentities.light.FresnelBlockEntity;
 import dev.imabad.theatrical.blocks.Blocks;
 import dev.imabad.theatrical.client.gui.screen.FresnelScreen;
+import dev.imabad.theatrical.net.OpenScreen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -110,9 +113,8 @@ public class FresnelBlock extends BaseLightBlock{
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(super.use(state, level, pos, player, hand, hit) != InteractionResult.SUCCESS) {
+        if(super.use(state, level, pos, player, hand, hit) == InteractionResult.PASS) {
             if (level.isClientSide) {
                 if (player.isCrouching()) {
                     if (TheatricalClient.DEBUG_BLOCKS.contains(pos)) {
@@ -122,8 +124,7 @@ public class FresnelBlock extends BaseLightBlock{
                     }
                     return InteractionResult.SUCCESS;
                 }
-                FresnelBlockEntity be = (FresnelBlockEntity) level.getBlockEntity(pos);
-                Minecraft.getInstance().setScreen(new FresnelScreen(be));
+                new OpenScreen(pos, TheatricalScreen.FRESNEL).sendTo((ServerPlayer) player);
             }
         }
         return InteractionResult.SUCCESS;

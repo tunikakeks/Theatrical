@@ -6,8 +6,12 @@ import com.mojang.math.Axis;
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
+import dev.imabad.theatrical.api.dmx.DMXConsumer;
 import dev.imabad.theatrical.blockentities.BlockEntities;
+import dev.imabad.theatrical.blockentities.control.BasicLightingDeskBlockEntity;
 import dev.imabad.theatrical.blockentities.light.BaseLightBlockEntity;
+import dev.imabad.theatrical.blockentities.light.FresnelBlockEntity;
+import dev.imabad.theatrical.blockentities.light.MovingLightBlockEntity;
 import dev.imabad.theatrical.blocks.light.MovingLightBlock;
 import dev.imabad.theatrical.client.LazyRenderers;
 import dev.imabad.theatrical.client.blockentities.BasicLightingConsoleRenderer;
@@ -15,11 +19,15 @@ import dev.imabad.theatrical.client.blockentities.FresnelRenderer;
 import dev.imabad.theatrical.client.blockentities.LEDPanelRenderer;
 import dev.imabad.theatrical.client.blockentities.MovingLightRenderer;
 import dev.imabad.theatrical.client.dmx.ArtNetToNetworkClientData;
+import dev.imabad.theatrical.client.gui.screen.BasicLightingDeskScreen;
+import dev.imabad.theatrical.client.gui.screen.FresnelScreen;
+import dev.imabad.theatrical.client.gui.screen.GenericDMXConfigurationScreen;
 import dev.imabad.theatrical.config.TheatricalConfig;
 import dev.imabad.theatrical.config.UniverseConfig;
 import dev.imabad.theatrical.dmx.DMXDevice;
 import dev.imabad.theatrical.client.dmx.TheatricalArtNetClient;
 import dev.imabad.theatrical.lighting.LightManager;
+import dev.imabad.theatrical.net.OpenScreen;
 import dev.imabad.theatrical.net.artnet.ListConsumers;
 import dev.imabad.theatrical.net.artnet.NotifyConsumerChange;
 import dev.imabad.theatrical.client.dmx.ArtNetManager;
@@ -196,6 +204,26 @@ public class TheatricalClient {
                 UniverseConfig universeConfig = TheatricalConfig.INSTANCE.CLIENT.universes.get(listConsumers.getUniverse());
                 for (DMXDevice dmxDevice : listConsumers.getDmxDevices()) {
                     artNetClient.addDevice((short) universeConfig.subnet, (short) universeConfig.universe, dmxDevice.getDeviceId(), dmxDevice);
+                }
+            }
+        }
+    }
+
+    public static void handleOpenScreen(OpenScreen openScreen){
+        switch (openScreen.getScreen()){
+            case GENERIC_DMX -> {
+                if(Minecraft.getInstance().level.getBlockEntity(openScreen.getPos()) instanceof DMXConsumer dmxConsumer){
+                    Minecraft.getInstance().setScreen(new GenericDMXConfigurationScreen<>(dmxConsumer, openScreen.getPos(), "block.theatrical.moving_light"));
+                }
+            }
+            case FRESNEL -> {
+                if(Minecraft.getInstance().level.getBlockEntity(openScreen.getPos()) instanceof FresnelBlockEntity fresnelBlockEntity) {
+                    Minecraft.getInstance().setScreen(new FresnelScreen(fresnelBlockEntity));
+                }
+            }
+            case BASIC_LIGHTING_DESK -> {
+                if(Minecraft.getInstance().level.getBlockEntity(openScreen.getPos()) instanceof BasicLightingDeskBlockEntity bse) {
+                    Minecraft.getInstance().setScreen(new BasicLightingDeskScreen(bse));
                 }
             }
         }

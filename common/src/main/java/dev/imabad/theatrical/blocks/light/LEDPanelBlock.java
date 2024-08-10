@@ -1,17 +1,20 @@
 package dev.imabad.theatrical.blocks.light;
 
 import dev.imabad.theatrical.TheatricalClient;
+import dev.imabad.theatrical.TheatricalScreen;
 import dev.imabad.theatrical.blockentities.BlockEntities;
 import dev.imabad.theatrical.blockentities.light.FresnelBlockEntity;
 import dev.imabad.theatrical.blockentities.light.LEDPanelBlockEntity;
 import dev.imabad.theatrical.blocks.Blocks;
 import dev.imabad.theatrical.client.gui.screen.FresnelScreen;
 import dev.imabad.theatrical.client.gui.screen.GenericDMXConfigurationScreen;
+import dev.imabad.theatrical.net.OpenScreen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -106,9 +109,8 @@ public class LEDPanelBlock extends BaseLightBlock {
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(super.use(state, level, pos, player, hand, hit) != InteractionResult.SUCCESS) {
+        if(super.use(state, level, pos, player, hand, hit) == InteractionResult.PASS) {
             if (level.isClientSide) {
                 if (player.isCrouching()) {
                     if (TheatricalClient.DEBUG_BLOCKS.contains(pos)) {
@@ -118,8 +120,8 @@ public class LEDPanelBlock extends BaseLightBlock {
                     }
                     return InteractionResult.SUCCESS;
                 }
-                LEDPanelBlockEntity be = (LEDPanelBlockEntity) level.getBlockEntity(pos);
-                Minecraft.getInstance().setScreen(new GenericDMXConfigurationScreen<>(be, pos, "block.theatrical.led_panel"));
+            } else{
+                new OpenScreen(pos, TheatricalScreen.GENERIC_DMX).sendTo((ServerPlayer) player);
             }
         }
         return InteractionResult.SUCCESS;

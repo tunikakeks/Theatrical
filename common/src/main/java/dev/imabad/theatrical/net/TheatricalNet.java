@@ -26,6 +26,7 @@ public interface TheatricalNet {
     MessageType NOTIFY_CONSUMER_CHANGE = MAIN.registerS2C("notify_consumer_change", NotifyConsumerChange::new);
     MessageType LIST_CONSUMERS = MAIN.registerS2C("list_consumers", ListConsumers::new);
     MessageType NOTIFY_NETWORKS = MAIN.registerS2C("notify_networks", NotifyNetworks::new);
+    MessageType OPEN_SCREEN = MAIN.registerS2C("open_screen", OpenScreen::new);
 
     static void init(){}
 }
