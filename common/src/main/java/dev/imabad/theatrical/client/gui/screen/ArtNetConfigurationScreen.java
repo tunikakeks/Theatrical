@@ -59,13 +59,13 @@ public class ArtNetConfigurationScreen extends Screen {
         super.init();
         layout = new GridLayout();
 //        layout = LinearLayout.vertical();
-        layout.defaultCellSetting().alignHorizontallyCenter().padding(10);
+        layout.defaultCellSetting().alignHorizontallyCenter().padding(5);
         xCenter = (this.width / 2);
         yCenter = (this.height / 2);
         this.ipAddressBox = new LabeledEditBox(this.font, xCenter, yCenter, 100, 20, Component.translatable("artneti.ipAddress")).color(0xffffff).shadow(true);
         this.ipAddressBox.setValue(ipAddress);
         layout.addChild(this.ipAddressBox, 1, 1, 1, 2);
-        configList = new ArtNetUniverseConfigurationList(Minecraft.getInstance(), this, 150, 200, Component.literal("test"));
+        configList = new ArtNetUniverseConfigurationList(Minecraft.getInstance(), this, 150, 100, Component.literal("test"));
         layout.addChild(configList, 2, 1, 2, 1, LayoutSettings.defaults().alignHorizontallyCenter().paddingBottom(0));
         configList.setEntries(universeConfigs);
         layout.addChild(new Button.Builder(Component.literal("Add"), (b) -> {
@@ -142,14 +142,14 @@ public class ArtNetConfigurationScreen extends Screen {
                 6, 1
         );
         layout.arrangeElements();
+        this.repositionElements();
         this.addRenderableWidget(configList);
         layout.visitWidgets(this::addRenderableWidget);
-        this.repositionElements();
     }
 
 
     protected void repositionElements() {
-        FrameLayout.centerInRectangle(this.layout, this.getRectangle());
+        FrameLayout.alignInRectangle(this.layout, 0, this.height / 6 - 12, this.width, this.height, 0.5F, 0.0F);
     }
 
     protected void refresh(){
@@ -304,9 +304,9 @@ public class ArtNetConfigurationScreen extends Screen {
         if(TheatricalConfig.INSTANCE.CLIENT.artnetEnabled) {
             if (TheatricalClient.getArtNetManager().getClient().hasReceivedPacket()) {
                 long inSeconds = Math.round((float) (System.currentTimeMillis() - TheatricalClient.getArtNetManager().getClient().getLastPacketMS()) / 1000);
-                renderLabel(guiGraphics, "artneti.lastReceived", 5, ipAddressBox.getY() + 5, inSeconds);
+                renderLabel(guiGraphics, "artneti.lastReceived", -50, ipAddressBox.getY() + 5, inSeconds);
             } else {
-                renderLabel(guiGraphics, "artneti.notConnected", 5, ipAddressBox.getY() + 5);
+                renderLabel(guiGraphics, "artneti.notConnected", -50, ipAddressBox.getY() + 5);
             }
         }
 //        }
@@ -314,7 +314,7 @@ public class ArtNetConfigurationScreen extends Screen {
 
     private void renderLabel(GuiGraphics guiGraphics, String translationKey, int offSetX, int offSetY, Object... replacements){
         MutableComponent translatable = Component.translatable(translationKey, replacements);
-        guiGraphics.drawString(font, translatable, xCenter + (this.font.width(translatable.getString()) / 2), offSetY, 0xffffff, false);
+        guiGraphics.drawString(font, translatable, xCenter + (this.font.width(translatable.getString()) / 2) + offSetX, offSetY, 0xffffff, false);
     }
 
     @Override
