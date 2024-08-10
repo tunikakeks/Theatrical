@@ -31,11 +31,13 @@ public class TheatricalNeoForge {
             TheatricalClient.init();
             FMLJavaModLoadingContext.get().getModEventBus().addListener((ModelEvent.RegisterAdditional additionalEvent) -> {
                 for(Fixture fixture : Fixtures.FIXTURES){
-                    additionalEvent.register(fixture.getStaticModel());
-                    if(fixture.hasPanModel()) {
+                    if(fixture.getStaticModel() != null) {
+                        additionalEvent.register(fixture.getStaticModel());
+                    }
+                    if(fixture.hasPanModel() && fixture.getPanModel() != null) {
                         additionalEvent.register(fixture.getPanModel());
                     }
-                    if(fixture.hasTiltModel()) {
+                    if(fixture.hasTiltModel() && fixture.getTiltModel() != null) {
                         additionalEvent.register(fixture.getTiltModel());
                     }
                 }
