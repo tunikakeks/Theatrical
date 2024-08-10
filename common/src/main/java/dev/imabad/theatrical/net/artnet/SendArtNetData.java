@@ -59,10 +59,10 @@ public class SendArtNetData extends BaseC2SMessage {
                         });
                     }
                 } else {
-                    Theatrical.LOGGER.info("{} tried to send ArtNet data to a network ({}) that they don't have permissions for", context.getPlayer().getName(), network.name());
+                    Theatrical.LOGGER.info("{} tried to send ArtNet data to a network ({}) that they don't have permissions for", context.getPlayer().getName().getString(), network.name());
                 }
             } else {
-                Theatrical.LOGGER.info("{} tried to send ArtNet data to a network that doesn't exist.", context.getPlayer().getName());
+                Theatrical.LOGGER.info("{} tried to send ArtNet data to a network that doesn't exist.", context.getPlayer().getName().getString());
             }
         }
     }

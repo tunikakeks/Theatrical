@@ -44,6 +44,7 @@ public class SavedClientNetworkManager {
     private void save(){
         String json = GSON.toJson(ipToNetworkIdMap);
         try {
+            Files.createDirectories(savePath.getParent());
             Files.writeString(savePath, json);
         } catch (IOException e) {
             e.printStackTrace();
