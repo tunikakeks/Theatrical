@@ -3,9 +3,6 @@ package dev.imabad.theatrical.net.artnet;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
-import dev.imabad.theatrical.Theatrical;
-import dev.imabad.theatrical.api.dmx.DMXConsumer;
-import dev.imabad.theatrical.dmx.DMXDevice;
 import dev.imabad.theatrical.dmx.DMXNetwork;
 import dev.imabad.theatrical.dmx.DMXNetworkData;
 import dev.imabad.theatrical.net.TheatricalNet;
@@ -13,7 +10,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class RequestNetworks extends BaseC2SMessage {

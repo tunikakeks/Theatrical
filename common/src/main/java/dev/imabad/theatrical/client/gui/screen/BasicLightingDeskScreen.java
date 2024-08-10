@@ -1,6 +1,5 @@
 package dev.imabad.theatrical.client.gui.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.imabad.theatrical.Theatrical;
 import dev.imabad.theatrical.TheatricalClient;
 import dev.imabad.theatrical.blockentities.control.BasicLightingDeskBlockEntity;

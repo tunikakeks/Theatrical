@@ -5,9 +5,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import org.lwjgl.opengl.GL11;
-
-import static net.minecraft.client.renderer.RenderStateShard.NO_TEXTURE;
 
 public class TheatricalRenderTypes {
 

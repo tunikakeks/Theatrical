@@ -3,13 +3,11 @@ package dev.imabad.theatrical.client.gui.widgets;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 public class LabeledEditBox extends EditBox {

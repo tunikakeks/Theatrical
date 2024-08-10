@@ -10,7 +10,6 @@ import dev.imabad.theatrical.net.TheatricalNet;
 import net.fabricmc.api.EnvType;
 import net.minecraft.network.FriendlyByteBuf;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package dev.imabad.theatrical.blocks.light;
 
-import dev.imabad.theatrical.blockentities.interfaces.ArtNetInterfaceBlockEntity;
 import dev.imabad.theatrical.blockentities.light.BaseDMXConsumerLightBlockEntity;
 import dev.imabad.theatrical.blockentities.light.LightCollisionContext;
 import dev.imabad.theatrical.blocks.HangableBlock;
@@ -8,8 +7,6 @@ import dev.imabad.theatrical.dmx.DMXNetwork;
 import dev.imabad.theatrical.dmx.DMXNetworkData;
 import dev.imabad.theatrical.items.Items;
 import dev.imabad.theatrical.util.UUIDUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

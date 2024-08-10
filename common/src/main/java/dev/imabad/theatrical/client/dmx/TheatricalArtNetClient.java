@@ -8,8 +8,6 @@ import ch.bildspur.artnet.rdm.RDMDeviceId;
 import ch.bildspur.artnet.rdm.RDMPacket;
 import ch.bildspur.artnet.rdm.RDMParameter;
 import dev.imabad.theatrical.Constants;
-import dev.imabad.theatrical.Theatrical;
-import dev.imabad.theatrical.TheatricalClient;
 import dev.imabad.theatrical.TheatricalExpectPlatform;
 import dev.imabad.theatrical.api.Fixture;
 import dev.imabad.theatrical.api.dmx.DMXPersonality;
@@ -26,14 +24,11 @@ import dev.imabad.theatrical.util.UUIDUtil;
 import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ServerData;
-import org.jetbrains.annotations.Nullable;
 
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TheatricalArtNetClient extends ArtNetClient {
     private ArtNetManager manager;

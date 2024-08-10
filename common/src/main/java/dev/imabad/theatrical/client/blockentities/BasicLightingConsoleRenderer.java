@@ -1,16 +1,12 @@
 package dev.imabad.theatrical.client.blockentities;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.imabad.theatrical.blockentities.control.BasicLightingDeskBlockEntity;
-import dev.imabad.theatrical.blocks.control.BasicLightingDeskBlock;
 import dev.imabad.theatrical.client.TheatricalRenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -19,7 +15,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 public class BasicLightingConsoleRenderer implements BlockEntityRenderer<BasicLightingDeskBlockEntity> {
     public BasicLightingConsoleRenderer(BlockEntityRendererProvider.Context context) {

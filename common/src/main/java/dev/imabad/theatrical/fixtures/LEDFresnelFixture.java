@@ -1,19 +1,14 @@
 package dev.imabad.theatrical.fixtures;
 
-import ch.bildspur.artnet.rdm.RDMSlotID;
-import ch.bildspur.artnet.rdm.RDMSlotType;
 import dev.imabad.theatrical.Theatrical;
 import dev.imabad.theatrical.api.Fixture;
 import dev.imabad.theatrical.api.HangType;
 import dev.imabad.theatrical.api.dmx.DMXPersonality;
-import dev.imabad.theatrical.api.dmx.DMXSlot;
 import dev.imabad.theatrical.blocks.light.BaseLightBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

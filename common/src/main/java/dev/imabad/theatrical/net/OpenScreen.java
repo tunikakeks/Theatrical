@@ -7,7 +7,6 @@ import dev.imabad.theatrical.TheatricalClient;
 import dev.imabad.theatrical.TheatricalScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 
 public class OpenScreen extends BaseS2CMessage {
 

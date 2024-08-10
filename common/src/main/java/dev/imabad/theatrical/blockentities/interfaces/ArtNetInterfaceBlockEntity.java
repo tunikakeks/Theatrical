@@ -5,7 +5,6 @@ import dev.imabad.theatrical.blockentities.ClientSyncBlockEntity;
 import dev.imabad.theatrical.config.TheatricalConfig;
 import dev.imabad.theatrical.dmx.DMXNetworkData;
 import dev.imabad.theatrical.util.UUIDUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
