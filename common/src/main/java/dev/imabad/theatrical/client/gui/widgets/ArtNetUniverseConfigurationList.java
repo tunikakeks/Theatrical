@@ -23,7 +23,6 @@ public class ArtNetUniverseConfigurationList extends ObjectSelectionList<ArtNetU
         this.parent = screen;
         this.setRenderBackground(true);
         this.setRenderHeader(false, 0);
-        this.setRenderTopAndBottom(false);
     }
 
     public void setEntries(Map<Integer, UniverseConfig> configs){
