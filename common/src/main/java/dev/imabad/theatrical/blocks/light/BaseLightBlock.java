@@ -72,7 +72,6 @@ public abstract class BaseLightBlock extends HangableBlock implements EntityBloc
         }
     }
     @Override
-    @Environment(EnvType.CLIENT)
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if(player.getItemInHand(hand).getItem() == Items.CONFIGURATION_CARD.get()){
             if(!level.isClientSide()) {
@@ -81,8 +80,12 @@ public abstract class BaseLightBlock extends HangableBlock implements EntityBloc
                 BlockEntity be = level.getBlockEntity(pos);
                 if (be instanceof BaseDMXConsumerLightBlockEntity consumerLightBlockEntity) {
                     consumerLightBlockEntity.setNetworkId(tagData.getUUID("network"));
-                    consumerLightBlockEntity.setUniverse(tagData.getInt("dmxUniverse"));
-                    consumerLightBlockEntity.setChannelStartPoint(tagData.getInt("dmxAddress"));
+                    if(tagData.getBoolean("universeEnabled")) {
+                        consumerLightBlockEntity.setUniverse(tagData.getInt("dmxUniverse"));
+                    }
+                    if(tagData.getBoolean("addressEnabled")) {
+                        consumerLightBlockEntity.setChannelStartPoint(tagData.getInt("dmxAddress"));
+                    }
                     if (tagData.getBoolean("autoIncrement")) {
                         tagData.putInt("dmxAddress", tagData.getInt("dmxAddress") + consumerLightBlockEntity.getChannelCount());
                     }

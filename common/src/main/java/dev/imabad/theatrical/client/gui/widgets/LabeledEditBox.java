@@ -9,6 +9,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 public class LabeledEditBox extends EditBox {
@@ -67,6 +68,7 @@ public class LabeledEditBox extends EditBox {
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+        guiGraphics.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xffffff);
         Component component = this.getMessage();
         int i = this.getWidth();
         int j = font.width(component);
