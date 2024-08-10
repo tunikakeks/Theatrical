@@ -30,8 +30,9 @@ public class FresnelBlockEntity extends BaseDMXConsumerLightBlockEntity {
 
     @Override
     public void consume(byte[] dmxValues) {
-        byte[] ourValues = Arrays.copyOfRange(dmxValues, this.getChannelStart(),
-                this.getChannelStart() + this.getChannelCount());
+        int start = this.getChannelStart() > 0 ? this.getChannelStart() - 1 : 0;
+        byte[] ourValues = Arrays.copyOfRange(dmxValues, start,
+                start+ this.getChannelCount());
         if(ourValues.length < 4){
             return;
         }
