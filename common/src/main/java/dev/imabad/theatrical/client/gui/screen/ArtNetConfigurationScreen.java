@@ -302,7 +302,7 @@ public class ArtNetConfigurationScreen extends Screen {
 //            renderLabel(guiGraphics, "artneti.notAuthorized", 5,75);
 //        } else {
         if(TheatricalConfig.INSTANCE.CLIENT.artnetEnabled) {
-            if (TheatricalClient.getArtNetManager().getClient().hasReceivedPacket()) {
+            if (TheatricalClient.getArtNetManager().getClient() != null && TheatricalClient.getArtNetManager().getClient().hasReceivedPacket()) {
                 long inSeconds = Math.round((float) (System.currentTimeMillis() - TheatricalClient.getArtNetManager().getClient().getLastPacketMS()) / 1000);
                 renderLabel(guiGraphics, "artneti.lastReceived", -50, ipAddressBox.getY() + 5, inSeconds);
             } else {
