@@ -267,6 +267,10 @@ public abstract class BaseLightBlockEntity extends ClientSyncBlockEntity impleme
         return (r << 16) | (g << 8) | b;
     }
 
+    public int getColour(){
+        return (getRed() << 16) | (getGreen() << 8) | getBlue();
+    }
+
     public static final Vec3 calculateViewVector(float xRot, float yRot) {
         float f = xRot * 0.017453292F;
         float g = -yRot * 0.017453292F;
