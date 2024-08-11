@@ -1,4 +1,4 @@
-# 1.20.2-alpha.18
+# 1.20.2-alpha.19
 
-* Fix crash when clicking on LED Fresnsel
-* Fix ArtNet config screen not being full visible on screen
+* Fix crash with null ArtNet client
+* Fix lights sometimes flashing weirdly
