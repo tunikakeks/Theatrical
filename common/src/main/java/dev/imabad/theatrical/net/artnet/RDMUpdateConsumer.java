@@ -56,17 +56,20 @@ public class RDMUpdateConsumer extends BaseC2SMessage {
     public void handle(NetworkManager.PacketContext context) {
         Level level = context.getPlayer().level();
         if(level.getServer() != null ) {
-            if (context.getPlayer().hasPermissions(level.getServer().getOperatorUserPermissionLevel())) {
-                DMXNetwork network = DMXNetworkData.getInstance(level.getServer().overworld()).getNetwork(networkId);
-                if(network == null){
-                    return;
+
+            DMXNetwork network = DMXNetworkData.getInstance(level.getServer().overworld()).getNetwork(networkId);
+            if(network == null || !network.canSendDMX(context.getPlayer().getUUID())) {
+                Theatrical.LOGGER.info("{} tried to send an RDM update for a network that doesn't exist or isn't part of", context.getPlayer().getName().getString());
+                return;
+            }
+            BlockPos consumerPos = network.getConsumerPos(universe, dmxDevice);
+            if(consumerPos != null){
+                BlockEntity be = context.getPlayer().level().getBlockEntity(consumerPos);
+                if(be instanceof BaseDMXConsumerLightBlockEntity dmxConsumerLightBlock){
+                    dmxConsumerLightBlock.setChannelStartPoint(newAddress);
+                } else if(be instanceof RedstoneInterfaceBlockEntity redstoneInterfaceBlockEntity){
+                    redstoneInterfaceBlockEntity.setChannelStartPoint(newAddress);
                 }
-                DMXConsumer consumer = network.getConsumer(universe, dmxDevice);
-                if(consumer != null){
-                    consumer.setStartAddress(newAddress);
-                }
-            } else {
-                Theatrical.LOGGER.info("{} tried to send ArtNet data but is not authorized!", context.getPlayer().getName());
             }
         }
     }

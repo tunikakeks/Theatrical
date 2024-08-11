@@ -1,25 +1,25 @@
 package dev.imabad.theatrical.blocks.control;
 
-import dev.imabad.theatrical.TheatricalClient;
+import dev.imabad.theatrical.TheatricalScreen;
 import dev.imabad.theatrical.blockentities.BlockEntities;
 import dev.imabad.theatrical.blockentities.control.BasicLightingDeskBlockEntity;
-import dev.imabad.theatrical.blockentities.light.FresnelBlockEntity;
-import dev.imabad.theatrical.blockentities.light.LightCollisionContext;
 import dev.imabad.theatrical.blocks.Blocks;
-import dev.imabad.theatrical.client.gui.screen.BasicLightingDeskScreen;
-import dev.imabad.theatrical.client.gui.screen.FresnelScreen;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
+import dev.imabad.theatrical.dmx.DMXNetwork;
+import dev.imabad.theatrical.dmx.DMXNetworkData;
+import dev.imabad.theatrical.net.OpenScreen;
+import dev.imabad.theatrical.util.UUIDUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -94,11 +94,16 @@ public class BasicLightingDeskBlock extends Block implements EntityBlock {
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(level.isClientSide){
+        if(!level.isClientSide){
             BasicLightingDeskBlockEntity be = (BasicLightingDeskBlockEntity) level.getBlockEntity(pos);
-            Minecraft.getInstance().setScreen(new BasicLightingDeskScreen(be));
+            if(be.getNetworkId() != UUIDUtil.NULL){
+                DMXNetwork network = DMXNetworkData.getInstance(level.getServer().overworld()).getNetwork(be.getNetworkId());
+                if(network != null && !network.isMember(player.getUUID())) {
+                    return InteractionResult.FAIL;
+                }
+            }
+            new OpenScreen(pos, TheatricalScreen.BASIC_LIGHTING_DESK).sendTo((ServerPlayer) player);
         }
         return InteractionResult.SUCCESS;
     }

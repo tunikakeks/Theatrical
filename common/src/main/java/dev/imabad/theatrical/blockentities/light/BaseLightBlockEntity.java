@@ -5,7 +5,6 @@ import dev.imabad.theatrical.api.Support;
 import dev.imabad.theatrical.blockentities.ClientSyncBlockEntity;
 import dev.imabad.theatrical.blocks.HangableBlock;
 import dev.imabad.theatrical.blocks.light.BaseLightBlock;
-import dev.imabad.theatrical.blocks.light.MovingLightBlock;
 import dev.imabad.theatrical.config.TheatricalConfig;
 import dev.imabad.theatrical.lighting.LambDynamicLight;
 import dev.imabad.theatrical.lighting.LambDynamicLightUtil;
@@ -22,10 +21,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.LightBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -305,7 +300,10 @@ public abstract class BaseLightBlockEntity extends ClientSyncBlockEntity impleme
         return (r << 16) | (g << 8) | b;
     }
 
-
+    public int getColour(){
+        return (getRed() << 16) | (getGreen() << 8) | getBlue();
+    }
+  
     public static final Vec3 calculateViewVector(float xRot, float yRot) {
         float f = xRot * 0.017453292F;
         float g = -yRot * 0.017453292F;
@@ -334,6 +332,13 @@ public abstract class BaseLightBlockEntity extends ClientSyncBlockEntity impleme
             float tilt = be.getTilt();
             if (be.isUpsideDown() || be instanceof FresnelBlockEntity) {
                 tilt = -tilt;
+            }
+            if(be instanceof LEDPanelBlockEntity){
+                if(blockState.getValue(BaseLightBlock.HANG_DIRECTION) == Direction.DOWN){
+                    tilt = -90;
+                } else if (blockState.getValue(BaseLightBlock.HANG_DIRECTION) == Direction.UP){
+                    tilt = 90;
+                }
             }
             float pan = (direction.toYRot() - be.getPan());
             if(direction.getAxis() == Direction.WEST.getAxis()){

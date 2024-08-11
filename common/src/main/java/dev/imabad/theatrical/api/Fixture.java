@@ -1,9 +1,7 @@
 package dev.imabad.theatrical.api;
 
 import dev.imabad.theatrical.api.dmx.DMXPersonality;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;

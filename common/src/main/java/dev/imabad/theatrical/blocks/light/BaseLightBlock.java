@@ -1,14 +1,12 @@
 package dev.imabad.theatrical.blocks.light;
 
-import dev.imabad.theatrical.blockentities.interfaces.ArtNetInterfaceBlockEntity;
 import dev.imabad.theatrical.blockentities.light.BaseDMXConsumerLightBlockEntity;
 import dev.imabad.theatrical.blockentities.light.LightCollisionContext;
 import dev.imabad.theatrical.blocks.HangableBlock;
+import dev.imabad.theatrical.dmx.DMXNetwork;
 import dev.imabad.theatrical.dmx.DMXNetworkData;
 import dev.imabad.theatrical.items.Items;
 import dev.imabad.theatrical.util.UUIDUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -72,27 +70,35 @@ public abstract class BaseLightBlock extends HangableBlock implements EntityBloc
         }
     }
     @Override
-    @Environment(EnvType.CLIENT)
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(player.getItemInHand(hand).getItem() == Items.CONFIGURATION_CARD.get()){
-            if(!level.isClientSide()) {
-                ItemStack itemInHand = player.getItemInHand(hand);
-                CompoundTag tagData = itemInHand.getOrCreateTag();
-                BlockEntity be = level.getBlockEntity(pos);
-                if (be instanceof BaseDMXConsumerLightBlockEntity consumerLightBlockEntity) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if(!level.isClientSide()) {
+            if (be instanceof BaseDMXConsumerLightBlockEntity consumerLightBlockEntity) {
+                if (!consumerLightBlockEntity.getNetworkId().equals(UUIDUtil.NULL)) {
+                    DMXNetwork network = DMXNetworkData.getInstance(level.getServer().overworld()).getNetwork(consumerLightBlockEntity.getNetworkId());
+                    if (network != null && !network.isMember(player.getUUID())) {
+                        return InteractionResult.FAIL;
+                    }
+                }
+                if (player.getItemInHand(hand).getItem() == Items.CONFIGURATION_CARD.get()) {
+                    ItemStack itemInHand = player.getItemInHand(hand);
+                    CompoundTag tagData = itemInHand.getOrCreateTag();
                     consumerLightBlockEntity.setNetworkId(tagData.getUUID("network"));
-                    consumerLightBlockEntity.setUniverse(tagData.getInt("dmxUniverse"));
-                    consumerLightBlockEntity.setChannelStartPoint(tagData.getInt("dmxAddress"));
+                    if (tagData.getBoolean("universeEnabled")) {
+                        consumerLightBlockEntity.setUniverse(tagData.getInt("dmxUniverse"));
+                    }
+                    if (tagData.getBoolean("addressEnabled")) {
+                        consumerLightBlockEntity.setChannelStartPoint(tagData.getInt("dmxAddress"));
+                    }
                     if (tagData.getBoolean("autoIncrement")) {
                         tagData.putInt("dmxAddress", tagData.getInt("dmxAddress") + consumerLightBlockEntity.getChannelCount());
                     }
                     itemInHand.save(tagData);
                     DMXNetworkData instance = DMXNetworkData.getInstance(level.getServer().overworld());
-                    player.sendSystemMessage(Component.translatable("item.configurationcard.success", instance.getNetwork(consumerLightBlockEntity.getNetworkId()).name(), Integer.toString(consumerLightBlockEntity.getUniverse()),  Integer.toString(consumerLightBlockEntity.getChannelStart()),  Integer.toString(tagData.getInt("dmxAddress"))));
+                    player.sendSystemMessage(Component.translatable("item.configurationcard.success", instance.getNetwork(consumerLightBlockEntity.getNetworkId()).name(), Integer.toString(consumerLightBlockEntity.getUniverse()), Integer.toString(consumerLightBlockEntity.getChannelStart()), Integer.toString(tagData.getInt("dmxAddress"))));
                     return InteractionResult.SUCCESS;
                 }
-            } else {
-                return InteractionResult.SUCCESS;
+                return InteractionResult.PASS;
             }
         }
         return super.use(state, level, pos, player, hand, hit);

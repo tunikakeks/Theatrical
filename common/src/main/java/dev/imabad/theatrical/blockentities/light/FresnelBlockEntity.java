@@ -2,12 +2,10 @@ package dev.imabad.theatrical.blockentities.light;
 
 import dev.imabad.theatrical.api.Fixture;
 import dev.imabad.theatrical.blockentities.BlockEntities;
-import dev.imabad.theatrical.blocks.light.MovingLightBlock;
 import dev.imabad.theatrical.fixtures.Fixtures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Arrays;
@@ -30,8 +28,9 @@ public class FresnelBlockEntity extends BaseDMXConsumerLightBlockEntity {
 
     @Override
     public void consume(byte[] dmxValues) {
-        byte[] ourValues = Arrays.copyOfRange(dmxValues, this.getChannelStart(),
-                this.getChannelStart() + this.getChannelCount());
+        int start = this.getChannelStart() > 0 ? this.getChannelStart() - 1 : 0;
+        byte[] ourValues = Arrays.copyOfRange(dmxValues, start,
+                start+ this.getChannelCount());
         if(ourValues.length < 4){
             return;
         }

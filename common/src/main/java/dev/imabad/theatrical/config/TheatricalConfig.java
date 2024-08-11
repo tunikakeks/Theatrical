@@ -3,11 +3,7 @@ package dev.imabad.theatrical.config;
 import dev.imabad.theatrical.Theatrical;
 import dev.imabad.theatrical.config.api.TheatricalConfigItem;
 import io.netty.util.collection.IntObjectHashMap;
-import io.netty.util.collection.IntObjectMap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TheatricalConfig {

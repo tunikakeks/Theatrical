@@ -8,8 +8,6 @@ import ch.bildspur.artnet.rdm.RDMDeviceId;
 import ch.bildspur.artnet.rdm.RDMPacket;
 import ch.bildspur.artnet.rdm.RDMParameter;
 import dev.imabad.theatrical.Constants;
-import dev.imabad.theatrical.Theatrical;
-import dev.imabad.theatrical.TheatricalClient;
 import dev.imabad.theatrical.TheatricalExpectPlatform;
 import dev.imabad.theatrical.api.Fixture;
 import dev.imabad.theatrical.api.dmx.DMXPersonality;
@@ -22,17 +20,15 @@ import dev.imabad.theatrical.net.artnet.RDMUpdateConsumer;
 import dev.imabad.theatrical.net.artnet.RequestConsumers;
 import dev.imabad.theatrical.net.artnet.SendArtNetData;
 import dev.imabad.theatrical.util.ByteUtils;
+import dev.imabad.theatrical.util.UUIDUtil;
 import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ServerData;
-import org.jetbrains.annotations.Nullable;
 
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TheatricalArtNetClient extends ArtNetClient {
     private ArtNetManager manager;
@@ -54,9 +50,11 @@ public class TheatricalArtNetClient extends ArtNetClient {
         queuedMessages = new ArrayDeque<>();
 //        universes = TheatricalConfig.INSTANCE.CLIENT.universes.values().stream().filter((i) -> i.enabled).map(universeConfig -> universeConfig.getUniverse()).collect(Collectors.toList());
 //        universes = new int[]{TheatricalConfig.INSTANCE.CLIENT.universe1,TheatricalConfig.INSTANCE.CLIENT.universe2,TheatricalConfig.INSTANCE.CLIENT.universe3,TheatricalConfig.INSTANCE.CLIENT.universe4};
-        for (Map.Entry<Integer, UniverseConfig> integerUniverseConfigEntry : TheatricalConfig.INSTANCE.CLIENT.universes.entrySet()) {
-            if(integerUniverseConfigEntry.getValue().enabled){
-                new RequestConsumers(manager.getNetworkId(), integerUniverseConfigEntry.getKey()).sendToServer();
+        if(manager.getNetworkId() != UUIDUtil.NULL) {
+            for (Map.Entry<Integer, UniverseConfig> integerUniverseConfigEntry : TheatricalConfig.INSTANCE.CLIENT.universes.entrySet()) {
+                if (integerUniverseConfigEntry.getValue().enabled) {
+                    new RequestConsumers(manager.getNetworkId(), integerUniverseConfigEntry.getKey()).sendToServer();
+                }
             }
         }
     }
@@ -64,9 +62,11 @@ public class TheatricalArtNetClient extends ArtNetClient {
     public void networkChange(){
         proxiedDevices.clear();
         queuedMessages.clear();
-        for (Map.Entry<Integer, UniverseConfig> integerUniverseConfigEntry : TheatricalConfig.INSTANCE.CLIENT.universes.entrySet()) {
-            if(integerUniverseConfigEntry.getValue().enabled){
-                new RequestConsumers(manager.getNetworkId(), integerUniverseConfigEntry.getKey()).sendToServer();
+        if(manager.getNetworkId() != UUIDUtil.NULL) {
+            for (Map.Entry<Integer, UniverseConfig> integerUniverseConfigEntry : TheatricalConfig.INSTANCE.CLIENT.universes.entrySet()) {
+                if (integerUniverseConfigEntry.getValue().enabled) {
+                    new RequestConsumers(manager.getNetworkId(), integerUniverseConfigEntry.getKey()).sendToServer();
+                }
             }
         }
     }

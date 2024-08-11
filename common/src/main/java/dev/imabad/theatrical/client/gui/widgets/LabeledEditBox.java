@@ -3,7 +3,6 @@ package dev.imabad.theatrical.client.gui.widgets;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -67,6 +66,7 @@ public class LabeledEditBox extends EditBox {
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+        guiGraphics.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xffffff);
         Component component = this.getMessage();
         int i = this.getWidth();
         int j = font.width(component);

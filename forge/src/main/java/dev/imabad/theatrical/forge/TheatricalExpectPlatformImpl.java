@@ -16,7 +16,6 @@ import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 
 import java.nio.file.Path;
-import java.util.Optional;
 
 public class TheatricalExpectPlatformImpl {
     /**

@@ -16,13 +16,15 @@ public class ConfigureConfigurationCard extends BaseC2SMessage {
 
     private UUID network;
     private int dmxAddress, dmxUniverse;
-    private boolean autoIncrement;
+    private boolean autoIncrement, universeEnabled, addressEnabled;
 
-    public ConfigureConfigurationCard(UUID network, int dmxAddress, int dmxUniverse, boolean autoIncrement) {
+    public ConfigureConfigurationCard(UUID network, int dmxAddress, int dmxUniverse, boolean autoIncrement,  boolean universeEnabled, boolean addressEnabled) {
         this.network = network;
         this.dmxAddress = dmxAddress;
         this.dmxUniverse = dmxUniverse;
         this.autoIncrement = autoIncrement;
+        this.universeEnabled = universeEnabled;
+        this.addressEnabled = addressEnabled;
     }
 
     public ConfigureConfigurationCard(FriendlyByteBuf buf){
@@ -30,6 +32,8 @@ public class ConfigureConfigurationCard extends BaseC2SMessage {
         this.dmxAddress = buf.readInt();
         this.dmxUniverse = buf.readInt();
         this.autoIncrement = buf.readBoolean();
+        this.universeEnabled = buf.readBoolean();
+        this.addressEnabled = buf.readBoolean();
     }
 
     @Override
@@ -43,6 +47,8 @@ public class ConfigureConfigurationCard extends BaseC2SMessage {
         buf.writeInt(dmxAddress);
         buf.writeInt(dmxUniverse);
         buf.writeBoolean(autoIncrement);
+        buf.writeBoolean(universeEnabled);
+        buf.writeBoolean(addressEnabled);
     }
 
     @Override
@@ -61,6 +67,8 @@ public class ConfigureConfigurationCard extends BaseC2SMessage {
                 dataTag.putInt("dmxUniverse", dmxUniverse);
                 dataTag.putInt("dmxAddress", dmxAddress);
                 dataTag.putBoolean("autoIncrement", autoIncrement);
+                dataTag.putBoolean("universeEnabled", universeEnabled);
+                dataTag.putBoolean("addressEnabled", addressEnabled);
                 itemStack.save(dataTag);
             }
         });

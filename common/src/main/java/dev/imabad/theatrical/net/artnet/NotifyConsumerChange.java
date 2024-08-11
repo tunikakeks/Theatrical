@@ -8,7 +8,6 @@ import dev.imabad.theatrical.TheatricalClient;
 import dev.imabad.theatrical.dmx.DMXDevice;
 import dev.imabad.theatrical.net.TheatricalNet;
 import net.fabricmc.api.EnvType;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 
 public class NotifyConsumerChange extends BaseS2CMessage {

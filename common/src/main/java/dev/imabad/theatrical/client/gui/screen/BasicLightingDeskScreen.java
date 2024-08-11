@@ -1,6 +1,5 @@
 package dev.imabad.theatrical.client.gui.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.imabad.theatrical.Theatrical;
 import dev.imabad.theatrical.TheatricalClient;
 import dev.imabad.theatrical.blockentities.control.BasicLightingDeskBlockEntity;
@@ -44,6 +43,7 @@ public class BasicLightingDeskScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderLabels(guiGraphics);
     }

@@ -5,6 +5,7 @@ import dev.imabad.theatrical.api.dmx.DMXConsumer;
 import dev.imabad.theatrical.net.artnet.NotifyConsumerChange;
 import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;

@@ -1,19 +1,17 @@
 package dev.imabad.theatrical.blocks.light;
 
 import dev.imabad.theatrical.TheatricalClient;
+import dev.imabad.theatrical.TheatricalScreen;
 import dev.imabad.theatrical.blockentities.BlockEntities;
 import dev.imabad.theatrical.blockentities.light.MovingLightBlockEntity;
 import dev.imabad.theatrical.blocks.Blocks;
-import dev.imabad.theatrical.client.gui.screen.GenericDMXConfigurationScreen;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
+import dev.imabad.theatrical.net.OpenScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -99,9 +97,8 @@ public class MovingLightBlock extends BaseLightBlock{
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(super.use(state, level, pos, player, hand, hit) != InteractionResult.SUCCESS) {
+        if(super.use(state, level, pos, player, hand, hit) == InteractionResult.PASS) {
             if (level.isClientSide) {
                 if (player.isCrouching()) {
                     if (TheatricalClient.DEBUG_BLOCKS.contains(pos)) {
@@ -111,8 +108,8 @@ public class MovingLightBlock extends BaseLightBlock{
                     }
                     return InteractionResult.SUCCESS;
                 }
-                MovingLightBlockEntity be = (MovingLightBlockEntity) level.getBlockEntity(pos);
-                Minecraft.getInstance().setScreen(new GenericDMXConfigurationScreen<>(be, pos, "block.theatrical.moving_light"));
+            } else {
+                new OpenScreen(pos, TheatricalScreen.GENERIC_DMX).sendTo((ServerPlayer) player);
             }
         }
         return InteractionResult.SUCCESS;

@@ -1,21 +1,12 @@
 package dev.imabad.theatrical.client.gui.screen;
 
-import dev.imabad.theatrical.Theatrical;
 import dev.imabad.theatrical.blockentities.light.FresnelBlockEntity;
-import dev.imabad.theatrical.blockentities.light.MovingLightBlockEntity;
 import dev.imabad.theatrical.client.gui.widgets.BasicSlider;
-import dev.imabad.theatrical.net.UpdateDMXFixture;
 import dev.imabad.theatrical.net.UpdateFixturePosition;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractSliderButton;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.layouts.LayoutSettings;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 
 public class FresnelScreen extends GenericDMXConfigurationScreen<FresnelBlockEntity> {
     private BasicSlider tiltSlider, panSlider;
@@ -43,6 +34,7 @@ public class FresnelScreen extends GenericDMXConfigurationScreen<FresnelBlockEnt
 
     @Override
     protected void update() {
+        super.update();
         new UpdateFixturePosition(be.getBlockPos(), be.getTilt(), be.getPan()).sendToServer();
     }
 

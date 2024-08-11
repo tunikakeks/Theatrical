@@ -1,29 +1,27 @@
 package dev.imabad.theatrical.fabric;
 
-import dev.architectury.platform.Platform;
 import dev.imabad.theatrical.TheatricalClient;
 import dev.imabad.theatrical.api.Fixture;
 import dev.imabad.theatrical.fixtures.Fixtures;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 
 public class TheatricalClientFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         TheatricalClient.init();
-        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+        ModelLoadingPlugin.register(pluginContext -> {
             for(Fixture fixture : Fixtures.FIXTURES){
-                out.accept(fixture.getStaticModel());
-                if(fixture.hasPanModel()) {
-                    out.accept(fixture.getPanModel());
+                if(fixture.getStaticModel() != null) {
+                    pluginContext.addModels(fixture.getStaticModel());
                 }
-                if(fixture.hasTiltModel()) {
-                    out.accept(fixture.getTiltModel());
+                if(fixture.hasPanModel() && fixture.getPanModel() != null) {
+                    pluginContext.addModels(fixture.getPanModel());
+                }
+                if(fixture.hasTiltModel() && fixture.getTiltModel() != null) {
+                    pluginContext.addModels(fixture.getTiltModel());
                 }
             }
         });

@@ -3,7 +3,6 @@ package dev.imabad.theatrical.blockentities.light;
 import ch.bildspur.artnet.rdm.RDMDeviceId;
 import dev.imabad.theatrical.Constants;
 import dev.imabad.theatrical.api.dmx.DMXConsumer;
-import dev.imabad.theatrical.dmx.DMXNetwork;
 import dev.imabad.theatrical.dmx.DMXNetworkData;
 import dev.imabad.theatrical.util.RndUtils;
 import dev.imabad.theatrical.util.UUIDUtil;
@@ -14,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.Arrays;
 import java.util.Random;
 import java.util.UUID;
 

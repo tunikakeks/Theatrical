@@ -7,7 +7,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.imabad.theatrical.dmx.*;
-import dev.imabad.theatrical.net.artnet.NotifyNetworks;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -127,7 +126,7 @@ public class NetworkCommand {
                 throw ERROR_NETWORK_DOES_NOT_EXIST.create();
             }
         }
-        Collection<GameProfile> players = GameProfileArgument.getGameProfiles(context, "targets");
+        Collection<GameProfile> players = GameProfileArgument.getGameProfiles(context, "target");
         DMXNetworkMemberRole role = MemberRoleArgument.getMode(context, "role");
         for (GameProfile player : players) {
             dmxNetwork.setMemberRole(player.getId(), role);
@@ -217,6 +216,10 @@ public class NetworkCommand {
             if(!dmxNetwork.isMember(player.getId())) {
                 dmxNetwork.addMember(player.getId(), DMXNetworkMemberRole.NONE);
                 context.getSource().sendSuccess(() -> Component.translatable("commands.network.members.add.success", Component.literal(player.getName())), false);
+                ServerPlayer serverPlayer = context.getSource().getServer().getPlayerList().getPlayer(player.getId());
+                if(serverPlayer != null){
+                    DMXNetworkData.getInstance(context.getSource().getLevel()).notifyNetworks(serverPlayer);
+                }
                 i++;
             }
         }
@@ -289,6 +292,10 @@ public class NetworkCommand {
         for (GameProfile player : players) {
             if(dmxNetwork.isMember(player.getId())){
                 dmxNetwork.removeMember(player.getId());
+                ServerPlayer serverPlayer = context.getSource().getServer().getPlayerList().getPlayer(player.getId());
+                if(serverPlayer != null){
+                    DMXNetworkData.getInstance(context.getSource().getLevel()).notifyNetworks(serverPlayer);
+                }
                 context.getSource().sendSuccess(() -> Component.translatable("commands.network.members.remove.success", Component.literal(player.getName())), false);
             }
         }

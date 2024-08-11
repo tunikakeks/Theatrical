@@ -4,13 +4,10 @@ import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import dev.imabad.theatrical.TheatricalClient;
-import dev.imabad.theatrical.client.dmx.ArtNetManager;
-import dev.imabad.theatrical.dmx.DMXNetwork;
 import dev.imabad.theatrical.net.TheatricalNet;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
