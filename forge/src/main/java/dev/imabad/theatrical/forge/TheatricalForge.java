@@ -8,6 +8,7 @@ import dev.imabad.theatrical.fixtures.Fixtures;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -19,6 +20,9 @@ public class TheatricalForge {
         EventBuses.registerModEventBus(Theatrical.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClient);
         Theatrical.init();
+        if(ModList.get().isLoaded("create")){
+            dev.imabad.theatrical.forge.compat.create.CreateCompat.init();
+        }
     }
 
     public void onClient(FMLClientSetupEvent event){

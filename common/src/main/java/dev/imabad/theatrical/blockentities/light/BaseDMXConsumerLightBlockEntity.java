@@ -114,6 +114,12 @@ public abstract class BaseDMXConsumerLightBlockEntity extends BaseLightBlockEnti
         setChanged();
         level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
     }
+
+    @Override
+    public void setStartAddress(int startAddress) {
+        setChannelStartPoint(startAddress);
+    }
+
     private void updateConsumer(){
         var dmxData = DMXNetworkData.getInstance(level.getServer().overworld()).getNetwork(networkId);
         if (dmxData != null) {
@@ -123,7 +129,7 @@ public abstract class BaseDMXConsumerLightBlockEntity extends BaseLightBlockEnti
     private void removeConsumer(){
         var dmxData = DMXNetworkData.getInstance(level.getServer().overworld()).getNetwork(networkId);
         if (dmxData != null) {
-            dmxData.removeConsumer(this, getBlockPos());
+            dmxData.removeConsumer(this);
         }
     }
     private void addConsumer(){
@@ -132,7 +138,7 @@ public abstract class BaseDMXConsumerLightBlockEntity extends BaseLightBlockEnti
             if(deviceId == null){
                 generateDeviceId();
             }
-            dmxData.addConsumer(getBlockPos(), this);
+            dmxData.addConsumer(this);
         }
     }
 

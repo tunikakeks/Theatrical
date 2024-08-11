@@ -4,6 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.imabad.theatrical.TheatricalExpectPlatform;
+import dev.imabad.theatrical.TheatricalRegistry;
+import dev.imabad.theatrical.api.Support;
+import dev.imabad.theatrical.blockentities.light.BaseLightBlockEntity;
 import dev.imabad.theatrical.blockentities.light.LEDPanelBlockEntity;
 import dev.imabad.theatrical.blocks.HangableBlock;
 import dev.imabad.theatrical.client.LazyRenderers;
@@ -27,13 +30,13 @@ public class LEDPanelRenderer extends FixtureRenderer<LEDPanelBlockEntity> {
     }
 
     @Override
-    public void renderModel(LEDPanelBlockEntity blockEntity, PoseStack poseStack, VertexConsumer vertexConsumer, Direction facing, float partialTicks, boolean isFlipped, BlockState blockState, boolean isHanging, int packedLight, int packedOverlay) {
+    public void renderModel(FixtureRenderContext fixtureRenderContext, PoseStack poseStack, VertexConsumer vertexConsumer, float partialTicks, BlockState blockState, int packedLight, int packedOverlay) {
         if(cachedStaticModel == null){
-            cachedStaticModel = TheatricalExpectPlatform.getBakedModel(blockEntity.getFixture().getStaticModel());
+            cachedStaticModel = TheatricalExpectPlatform.getBakedModel(fixtureRenderContext.fixtureType().getStaticModel());
         }
         //#region Fixture Hanging
         poseStack.translate(0.5F, 0, .5F);
-        if(isHanging){
+        if(fixtureRenderContext.isHanging()){
             Direction hangDirection = blockState.getValue(HangableBlock.HANG_DIRECTION);
             poseStack.translate(0, 0.5, 0F);
             if(hangDirection.getAxis() != Direction.Axis.Y){
@@ -77,12 +80,12 @@ public class LEDPanelRenderer extends FixtureRenderer<LEDPanelBlockEntity> {
             poseStack.translate(0, -0.5, 0F);
         }
         //#endregion
-        poseStack.mulPose(Axis.YP.rotationDegrees(facing.toYRot()));
+        poseStack.mulPose(Axis.YP.rotationDegrees(fixtureRenderContext.facing().toYRot()));
         poseStack.translate(-0.5F, 0, -.5F);
-        if (isHanging) {
-            Optional<BlockState> optionalSupport = blockEntity.getSupportingStructure();
+        if (fixtureRenderContext.isHanging()) {
+            Optional<BlockState> optionalSupport = fixtureRenderContext.supportingStructure();
             if (optionalSupport.isPresent()) {
-                float[] transforms = blockEntity.getFixture().getTransforms(blockState, optionalSupport.get());
+                float[] transforms = fixtureRenderContext.fixtureType().getTransforms(blockState, optionalSupport.get());
                 poseStack.translate(transforms[0], transforms[1], transforms[2]);
             } else {
                 poseStack.translate(0, 0.19, 0);
@@ -132,7 +135,7 @@ public class LEDPanelRenderer extends FixtureRenderer<LEDPanelBlockEntity> {
     public void preparePoseStack(LEDPanelBlockEntity blockEntity, PoseStack poseStack, Direction facing, float partialTicks, boolean isFlipped, BlockState blockState, boolean isHanging) {
         //#region Fixture Hanging
         poseStack.translate(0.5F, 0, .5F);
-        if(isHanging){
+        if(fixtureRenderContext.isHanging()){
             Direction hangDirection = blockState.getValue(HangableBlock.HANG_DIRECTION);
             poseStack.translate(0, 0.5, 0F);
             if(hangDirection.getAxis() != Direction.Axis.Y){
@@ -176,16 +179,55 @@ public class LEDPanelRenderer extends FixtureRenderer<LEDPanelBlockEntity> {
             poseStack.translate(0, -0.5, 0F);
         }
         //#endregion
-        poseStack.mulPose(Axis.YP.rotationDegrees(facing.toYRot()));
+        poseStack.mulPose(Axis.YP.rotationDegrees(fixtureRenderContext.facing().toYRot()));
         poseStack.translate(-0.5F, 0, -.5F);
-        if (isHanging) {
-            Optional<BlockState> optionalSupport = blockEntity.getSupportingStructure();
+        if (fixtureRenderContext.isHanging()) {
+            Optional<BlockState> optionalSupport = fixtureRenderContext.supportingStructure();
             if (optionalSupport.isPresent()) {
-                float[] transforms = blockEntity.getFixture().getTransforms(blockState, optionalSupport.get());
+                float[] transforms = fixtureRenderContext.fixtureType().getTransforms(blockState, optionalSupport.get());
                 poseStack.translate(transforms[0], transforms[1], transforms[2]);
             } else {
                 poseStack.translate(0, 0.19, 0);
             }
+        }
+    }
+
+    @Override
+    public void beforeRenderBeam(FixtureRenderContext fixtureRenderContext, PoseStack poseStack, VertexConsumer vertexConsumer, MultiBufferSource multiBufferSource, float partialTicks, BlockState blockstate, int packedLight, int packedOverlay) {
+        if(fixtureRenderContext.intensity() > 0){
+            LazyRenderers.addLazyRender(new LazyRenderers.LazyRenderer() {
+                @Override
+                public void render(MultiBufferSource.BufferSource bufferSource, PoseStack poseStack, Camera camera, float partialTick) {
+                    poseStack.pushPose();
+                    Vec3 offset = Vec3.atLowerCornerOf(fixtureRenderContext.pos()).subtract(camera.getPosition());
+                    poseStack.translate(offset.x, offset.y, offset.z);
+                    preparePoseStack(fixtureRenderContext, poseStack, partialTick, blockstate);
+                    VertexConsumer beamConsumer = multiBufferSource.getBuffer(TheatricalRenderTypes.BEAM);
+//            poseStack.translate(blockEntity.getFixture().getBeamStartPosition()[0], blockEntity.getFixture().getBeamStartPosition()[1], blockEntity.getFixture().getBeamStartPosition()[2]);
+                    float intensity = (fixtureRenderContext.prevIntensity() + ((fixtureRenderContext.intensity()) - fixtureRenderContext.prevIntensity()) * partialTicks);
+                    int color = BaseLightBlockEntity.calculatePartialColour(fixtureRenderContext.prevRed(),
+                            fixtureRenderContext.prevGreen(), fixtureRenderContext.prevBlue(),
+                            fixtureRenderContext.blue(), fixtureRenderContext.green(), fixtureRenderContext.blue(),
+                            partialTicks);
+                    int r = (color >> 16) & 0xFF;
+                    int g = (color >> 8) & 0xFF;
+                    int b = color & 0xFF;
+                    int a = (int) (((float) ((intensity * 1) / 255f)) * 255);
+                    poseStack.translate(0, 0f, -0.01f);
+                    Matrix4f m = poseStack.last().pose();
+                    Matrix3f normal = poseStack.last().normal();
+                    addVertex(beamConsumer, m, normal, r, g, b, a, 0, 1 , 0);
+                    addVertex(beamConsumer, m, normal, r, g, b, a,  1, 1, 0);
+                    addVertex(beamConsumer, m, normal, r, g, b, a, 1, 0, 0);
+                    addVertex(beamConsumer, m, normal, r, g, b, a,0, 0, 0);
+                    poseStack.popPose();
+                }
+
+                @Override
+                public Vec3 getPos(float partialTick) {
+                    return fixtureRenderContext.pos().getCenter();
+                }
+            });
         }
     }
 }
